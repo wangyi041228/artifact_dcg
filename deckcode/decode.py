@@ -26,7 +26,7 @@ class Decoder:
             self.game = GameClass.CLASSIC
             self.decoded = b64decode(deckcode.lstrip('ADC').replace('-', '/').replace('_', '='))
         else:
-            self.game = GameClass.FOUNDARY
+            self.game = GameClass.FOUNDRY
             self.decoded = b64decode(deckcode.lstrip('RTFACT').replace('-', '/').replace('_', '='))
 
         version_and_heroes = self.decoded[0]
@@ -34,11 +34,11 @@ class Decoder:
         if version == 1:
             name_length = 0
             start_index = 2
-            checksum = self.decoded[2]
+            # checksum = self.decoded[2]
         else:
             name_length = self.decoded[2]
             start_index = 3
-            checksum = 0
+            # checksum = 0
         card_byte_length = len(self.decoded) - name_length
         heroes_count, self.point = self._read_var_encoded(version_and_heroes, 3, start_index)
 

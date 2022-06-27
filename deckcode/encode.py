@@ -6,19 +6,19 @@ class Encoder:
     def __init__(self, heroes, cards, name='', game=GameClass.CLASSIC):
         if game == GameClass.CLASSIC:
             prefix = 'ADC'
-        elif game == GameClass.FOUNDARY:
+        elif game == GameClass.FOUNDRY:
             prefix = 'RTFACT'
         else:
             raise ValueError
         self.heroes = sorted(heroes)
         self.cards = sorted(cards)
-        self.name = name[:63]
+        self.name = name
         self.array = bytearray()
         version = 2 << 4 | _extract_n_bits(len(heroes), 3)
         self.array.append(version)
         self.array.append(0)
         _com_point = len(self.array)
-        self.array.append(len(self.name))
+        self.array.append(len(self.name.encode()))
         self._add_remaining_bits_from_number(len(self.heroes), 3)
 
         previous_card_id = 0
@@ -68,7 +68,8 @@ def _extract_n_bits(value: int, num_bits: int):
 
 if __name__ == '__main__':
     _a = [(4005, 2), (10014, 1), (10017, 3), (10026, 1), (10047, 1)]
-    _a1 = [(10014, 1), (10017, 3), (10026, 1), (4005, 2), (10047, 1), (10014, 1), (10017, 3), (10026, 1), (4005, 2), (10047, 1), (10014, 1), (10017, 3), (10026, 1), (4005, 2), (10047, 1)]
+    _a1 = [(10014, 1), (10017, 3), (10026, 1), (4005, 2), (10047, 1), (10014, 1), (10017, 3), (10026, 1), (4005, 2),
+           (10047, 1), (10014, 1), (10017, 3), (10026, 1), (4005, 2), (10047, 1)]
     _b = [(3000, 2), (3001, 1), (10091, 3), (10102, 3), (10128, 3), (10165, 3),
           (10168, 3), (10169, 3), (10185, 3), (10223, 1), (10234, 3), (10260, 1),
           (10263, 1), (10322, 3), (10354, 3)]
